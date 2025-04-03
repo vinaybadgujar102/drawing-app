@@ -1,8 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET, PORT } from "./config";
 import { middleware } from "./middleware";
-
+import { JWT_SECRET, PORT } from "@repo/backend-common/config";
 // do zod validation later
 
 const app = express();
