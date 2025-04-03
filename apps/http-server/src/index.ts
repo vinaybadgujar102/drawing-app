@@ -2,12 +2,23 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { middleware } from "./middleware";
 import { JWT_SECRET, PORT } from "@repo/backend-common/config";
+import {
+  CreateUserSchema,
+  SignInSchema,
+  CreateRoomSchema,
+} from "@repo/common/types";
+
 // do zod validation later
 
 const app = express();
 
 app.post("/signup", (req, res) => {
-  // db call
+  const parsedData = CreateUserSchema.safeParse(req.body);
+
+  if (!parsedData.success) {
+    res.status(400).json({ error: parsedData.error });
+    return;
+  }
 
   res.json({
     userId: 1,
