@@ -12,15 +12,25 @@ model User {
   email    String  @unique
   password String
   name     String
-  photoUrl String?
+  photo    String?
+  rooms    Room[]
+  chats    Chat[]
 }
 
 model Room {
   id        Int      @id @default(autoincrement())
-  slug      String   @unique // for public url
+  slug      String   @unique
   createdAt DateTime @default(now())
+  adminId   String
+  admin     User     @relation(fields: [adminId], references: [id])
+  chats     Chat[]
 }
 
 model Chat {
-  id Int @id @default(autoincrement())
+  id      Int    @id @default(autoincrement())
+  roomId  Int
+  message String
+  userId  String
+  room    Room   @relation(fields: [roomId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }
