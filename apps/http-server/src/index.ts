@@ -121,6 +121,26 @@ app.post("/room", middleware, async (req, res) => {
   }
 });
 
+app.get("/chats/:roomId", middleware, async (req, res) => {
+  try {
+    const roomId = Number(req.params.roomId);
+
+    const messages = await prisma.chat.findMany({
+      where: {
+        roomId,
+      },
+      orderBy: {
+        id: "desc",
+      },
+      take: 50,
+    });
+
+    res.json({ messages });
+  } catch (error) {
+    res.status(400).json({ error: "Failed to get chats" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });
