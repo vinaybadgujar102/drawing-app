@@ -141,6 +141,27 @@ app.get("/chats/:roomId", middleware, async (req, res) => {
   }
 });
 
+app.get("/room/:slug", async (req, res) => {
+  try {
+    const slug = req.params.slug;
+
+    const room = await prisma.room.findUnique({
+      where: {
+        slug,
+      },
+    });
+
+    if (!room) {
+      res.status(400).json({ error: "Room not found" });
+      return;
+    }
+
+    res.json({ room });
+  } catch (error) {
+    res.status(400).json({ error: "Failed to get room" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");
 });
